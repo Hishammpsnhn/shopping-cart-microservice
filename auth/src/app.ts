@@ -1,31 +1,37 @@
-import { json } from "body-parser";
 import express, { Request, Response } from "express";
-import cookieSession from 'cookie-session'
+import { json } from "body-parser";
+import cookieSession from "cookie-session";
+import { SignUpRouter } from "./routes/register";
+import { SignInRouter } from "./routes/signIn";
 import {
-    NotAuthorizedError,
-    NotFoundError,
-    errorHandler,
+  NotAuthorizedError,
+  NotFoundError,
+  errorHandler,
 } from "@hpshops/common/build";
+import { signOutRouter } from "./routes/signOut";
+import { currentUserRoute } from "./routes/currentUser";
 
 const app = express();
+
 const router = express.Router();
 
-
-app.set("trust proxt", true);
+app.set("trust proxy", true);
 app.use(json());
 app.use(
-    cookieSession({
-        signed: false,
-    })
-)
+  cookieSession({
+    signed: false,
+  })
+);
 
-app.use('/',(req,res)=>{
-    res.send("hi man how are you")
-})
+app.use(SignUpRouter);
+app.use(SignInRouter);
+app.use(signOutRouter)
+app.use(currentUserRoute);
 
 app.all("*", async (req, res) => {
-    console.log(77777777);
-    throw new NotFoundError();
+  console.log(777777777777777);
+  
+  throw new NotFoundError();
 });
 
 app.use(errorHandler);
