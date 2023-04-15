@@ -22,6 +22,7 @@ async function connect() {
 connect();
 
 app.post("/api/product/buy", isAuthenticated, async (req: Request, res: Response) => {
+  console.log(req.user)
   const { ids } = req.body;
   const products = await Product.find({ _id: { $in: ids } });
   channel.sendToQueue(
@@ -29,11 +30,11 @@ app.post("/api/product/buy", isAuthenticated, async (req: Request, res: Response
     Buffer.from(
       JSON.stringify({
         products,
-        userEmail: req.user.email,
+        userEmail: req.user.id.email,
       })
     )
   );
-  
+
 
 });
 

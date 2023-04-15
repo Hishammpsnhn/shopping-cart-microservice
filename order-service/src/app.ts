@@ -36,7 +36,7 @@ connect().then(() => {
   channel.consume("ORDER", (data: any) => {
     console.log("Consuming ORDER service");
     const { products, userEmail } = JSON.parse(data.content);
-    console.log(products)
+    console.log(products,userEmail)
     // const newOrder = createOrder(products, userEmail);
     // channel.ack(data);
     // channel.sendToQueue(
