@@ -8,5 +8,5 @@
   },
   "include": [
     "src/**/*"
-, "../product-service/src/model/productModel.ts"  ]
+  ]
 }

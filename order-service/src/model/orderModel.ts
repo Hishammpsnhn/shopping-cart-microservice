@@ -1,27 +1,28 @@
-import { Schema, model, Document } from 'mongoose';
+import mongoose, { Schema, Document } from "mongoose";
 
-
-interface IProduct extends Document {
- products:object[];
- user:string
- total_price:number,
- created_at:string
-
+export interface IProduct {
+  product_id: string;
 }
 
-const OrderSchema = new Schema({
+export interface IOrder extends Document {
+  products: IProduct[];
+  user: string;
+  total_price: number;
+  created_at: Date;
+}
+
+const OrderSchema: Schema = new Schema({
   products: [
     {
-      product_id: String,
+      product_id: { type: String },
     },
   ],
-  user: String,
-  total_price: Number,
+  user: { type: String },
+  total_price: { type: Number },
   created_at: {
     type: Date,
     default: Date.now(),
   },
 });
 
-
-export default model<IProduct>('Order', OrderSchema);
+export default mongoose.model<IOrder>("Order", OrderSchema);

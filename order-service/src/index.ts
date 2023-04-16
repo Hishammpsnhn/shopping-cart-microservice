@@ -22,7 +22,7 @@ const start = async () => {
     } catch (err) {
         console.error(err);
     }
-    const port = process.env.PORT;
+    let port = process.env.PORT
     app.listen(port, () => {
         console.log(`order server listening on port ${port}`)
     })
