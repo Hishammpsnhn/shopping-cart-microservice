@@ -11,6 +11,7 @@ const router = express.Router();
 
 app.set("trust proxy", true);
 app.use(json());
+var order:any;
 
 
 async function connect() {
@@ -21,8 +22,8 @@ async function connect() {
 }
 connect();
 
-app.post("/api/product/buy", isAuthenticated, async (req: Request, res: Response) => {
-  console.log(req.user)
+
+app.post("/api/product/buy", isAuthenticated, async (req, res) => {
   const { ids } = req.body;
   const products = await Product.find({ _id: { $in: ids } });
   channel.sendToQueue(
@@ -30,12 +31,16 @@ app.post("/api/product/buy", isAuthenticated, async (req: Request, res: Response
     Buffer.from(
       JSON.stringify({
         products,
-        userEmail: req.user.id.email,
+        userEmail: req.user.email,
       })
     )
   );
-
-
+  channel.consume("PRODUCT", (data: any) => {
+    console.log("consuming product data")
+    order = JSON.parse(data.content);
+    channel.ack(data)
+    return res.json(order);
+  });
 });
 
 app.post("/api/product/create", isAuthenticated, async (req: Request, res: Response) => {
