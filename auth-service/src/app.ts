@@ -15,6 +15,10 @@ const app = express();
 
 const router = express.Router();
 
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
+
 app.set("trust proxy", true);
 app.use(json());
 app.use(
