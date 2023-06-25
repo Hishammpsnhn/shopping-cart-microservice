@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import { json } from "body-parser";
 import cookieSession from "cookie-session";
-import { SignUpRouter } from "./routes/register";
+import { SignUpRouter } from "./routes/signup";
 import { SignInRouter } from "./routes/signIn";
 import {
   NotAuthorizedError,
@@ -32,11 +32,11 @@ app.use(SignInRouter);
 app.use(signOutRouter)
 app.use(currentUserRoute);
 
-app.all("*", async (req, res) => {
-  console.log(777777777777777);
+// app.all("*", async (req, res) => {
+//   console.log(777777777777777);
   
-  throw new NotFoundError();
-});
+//   throw new NotFoundError();
+// });
 
 app.use(errorHandler);
 

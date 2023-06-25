@@ -22,7 +22,7 @@ const start = async () => {
     } catch (err) {
         console.error(err);
     }
-    app.listen(3000, () => {
+    app.listen(process.env.PORT, () => {
         console.log("Auth server listening on port 3000")
     })
 }
