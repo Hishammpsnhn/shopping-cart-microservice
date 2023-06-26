@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp-deployment
+  labels:
+    app: webapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webapp
+  template:
+    metadata:
+      labels:
+        app: webapp
+    spec:
+      containers:
+      - name: webapp
+        image: hishammpsn/auth-service:0.0.3.RELEASE
+        ports:
+        - containerPort: 4000
+         env:
+        - name: USER_NAME
+          valueFrom:
+            secretKeyRef:
+              name: secret
+              key: mongo-user
+        - name: USER_PWD
+          valueFrom:
+            secretKeyRef:
+              name: secret
+              key: mongo-password 
+        - name: JWT_KEY
+          valueFrom:
+            secretKeyRef:
+                name: secret
+                key: JWT_KEY
+        - name: MONGO_URI
+            value: 'mongodb://auth-mongo-srv:27017/auth'
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp-service
+spec:
+  type: NodePort
+  selector:
+    app: webapp
+  ports:
+    - protocol: TCP
+      port: 4000
+      targetPort: 4000
+      nodePort: 30100
